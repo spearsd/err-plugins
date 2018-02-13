@@ -1,5 +1,5 @@
 [Core]
-Name = SQL
+Name = SQLPlugin
 Module = sql
 
 [Python]
