@@ -34,7 +34,7 @@ class SQLPlugin(BotPlugin):
         self.set_variables(msg)
         output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
 
-        output_array_list = str(output)split("'")[1].split("\\n")
+        output_array_list = str(output).split("'")[1].split("\\n")
         for o in output_array_list:
             output_array = output_array_list.split("\\t")
             whole_line = ""
