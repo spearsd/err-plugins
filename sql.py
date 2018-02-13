@@ -8,7 +8,7 @@ class SQLPlugin(BotPlugin):
     passwd = ""
     server = ""
     
-    def set_variables(self, msg, args):
+    def set_variables(self, msg, *args):
         user_array = str(msg.frm).split("@")
         username = user_array[0]
         gpg_string = "/root/.password-store/" + username + ".gpg"
