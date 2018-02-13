@@ -24,8 +24,8 @@ class SQLPlugin(BotPlugin):
         
     
     @botcmd(split_args_with=None)
-    def select(self, msg, args):
-        """Return result of select statement. ex: !select * db.tablename"""
+    def sql_select(self, msg, args):
+        """Return result of select statement. ex: !sql select * db.tablename"""
         what_to_select = args[0]
         table = args[1]
         query = "SELECT "+ what_to_select + " FROM " + table
@@ -56,4 +56,43 @@ class SQLPlugin(BotPlugin):
                 first_line = False
             else:
                 yield whole_line
-            
+
+                
+                
+    @botcmd(split_args_with=None)
+    def sql_file(self, msg, args):
+        """Execute remote sql file on targeted server. ex: !sql file http://path.to.file/file.sql"""
+        file_url = args[0]
+        error = ""
+        
+        try:
+            self.set_variables(msg)
+        except:
+            return "Unable to retrieve your credentials."
+        
+        try:
+            subprocess.check_output(["wget", file_url])
+        except:
+            return "Unable to retrieve file from specified url."
+        
+        # pass in file
+        try:
+            subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
+        except:
+            return "Error connecting with your user, do you have the correct permissions?"
+        
+        output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
+
+        output_array_list = str(output).split("'")[1].split("\\n")
+        first_line = True
+        for o in output_array_list:
+            output_array = o.split("\\t")
+            whole_line = ""
+            for x in output_array:
+                whole_line = whole_line + x + "     "
+            if first_line:
+                yield whole_line
+                yield "------------------"
+                first_line = False
+            else:
+                yield whole_line
