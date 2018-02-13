@@ -36,7 +36,7 @@ class SQLPlugin(BotPlugin):
 
         output_array_list = str(output).split("'")[1].split("\\n")
         for o in output_array_list:
-            output_array = output_array_list.split("\\t")
+            output_array = o.split("\\t")
             whole_line = ""
             for x in output_array:
                 whole_line = whole_line + x + "    "
