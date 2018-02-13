@@ -1,7 +1,7 @@
 from errbot import BotPlugin, botcmd
 import subprocess, tempfile, re, time
 
-class SQL(BotPlugin):
+class SQLPlugin(BotPlugin):
     """SQL plugin for Errbot"""
     
     user = ""
