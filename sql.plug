@@ -1,6 +1,7 @@
 [Core]
 Name = SQLPlugin
 Module = sql
+DependsOn = AutoSysServer
 
 [Python]
 Version = 3
