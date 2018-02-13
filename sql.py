@@ -32,7 +32,6 @@ class SQLPlugin(BotPlugin):
         error = ""
         
         set_variables(self, msg, args)
-        mysql -u dustin -pthisismypass123 -h mysql -e "SELECT * FROM test.table1"
         output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
 
         output_array = output.split("\\n")
