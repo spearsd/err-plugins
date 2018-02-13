@@ -1,0 +1,10 @@
+[Core]
+Name = SQL
+Module = sql
+DependsOn = AutoSysServer
+
+[Python]
+Version = 3
+
+[Documentation]
+Description = MySQL plugin
