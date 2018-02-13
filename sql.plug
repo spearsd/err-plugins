@@ -1,6 +1,6 @@
 [Core]
 Name = SQL
-Module = select
+Module = sql
 
 [Python]
 Version = 3
