@@ -23,10 +23,9 @@ class SQLPlugin(BotPlugin):
         self.server = self.get_plugin('AutoSysServer').target_server
         
     
-    @botcmd
+    @botcmd(split_args_with=None)
     def select(self, msg, args):
         """Return job status"""
-        yield "Following args given: " + args
         what_to_select = args[0]
         table = args[1]
         query = "SELECT "+ what_to_select + " FROM " + table
