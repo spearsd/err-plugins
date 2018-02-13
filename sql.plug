@@ -1,7 +1,6 @@
 [Core]
 Name = SQL
 Module = sql
-DependsOn = AutoSysServer
 
 [Python]
 Version = 3
