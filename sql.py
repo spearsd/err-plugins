@@ -43,7 +43,7 @@ class SQLPlugin(BotPlugin):
                 whole_line = whole_line + x + "     "
             if first_line:
                 yield whole_line
-                yield "--------------------------------------"
+                yield "------------------"
                 first_line = False
             else:
                 yield whole_line
