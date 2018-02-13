@@ -1,7 +1,7 @@
 from errbot import BotPlugin, botcmd
 import subprocess, tempfile, re, time
 
-class AutoSysJob(BotPlugin):
+class sql(BotPlugin):
     """AutoSys job plugin for Errbot"""
 
     def ssh(self, msg, command):
