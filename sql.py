@@ -35,9 +35,16 @@ class SQLPlugin(BotPlugin):
         output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
 
         output_array_list = str(output).split("'")[1].split("\\n")
+        first_line = True
         for o in output_array_list:
             output_array = o.split("\\t")
             whole_line = ""
             for x in output_array:
                 whole_line = whole_line + x + "     "
-            yield whole_line
+            if first_line:
+                yield whole_line
+                yield "--------------------------------------"
+                first_line = False
+            else:
+                yield whole_line
+            
