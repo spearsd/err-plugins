@@ -40,4 +40,4 @@ class SQLPlugin(BotPlugin):
             whole_line = ""
             for x in output_array:
                 whole_line = whole_line + x + "    "
-           yield whole_line
+            yield whole_line
