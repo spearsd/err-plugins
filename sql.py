@@ -39,5 +39,5 @@ class SQLPlugin(BotPlugin):
             output_array = o.split("\\t")
             whole_line = ""
             for x in output_array:
-                whole_line = whole_line + x + "    "
+                whole_line = whole_line + x + "     "
             yield whole_line
