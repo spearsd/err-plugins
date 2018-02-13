@@ -31,7 +31,16 @@ class SQLPlugin(BotPlugin):
         query = "SELECT "+ what_to_select + " FROM " + table
         error = ""
         
-        self.set_variables(msg)
+        try:
+            self.set_variables(msg)
+        except:
+            return "Unable to retrieve your credentials."
+        
+        try:
+            subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
+        except:
+            return "Error connecting with your user, do you have the correct permissions?"
+        
         output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
 
         output_array_list = str(output).split("'")[1].split("\\n")
