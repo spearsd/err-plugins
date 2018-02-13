@@ -31,7 +31,7 @@ class SQLPlugin(BotPlugin):
         query = "SELECT "+ what_to_select + " FROM " + table
         error = ""
         
-        self.set_variables(self, msg)
+        self.set_variables(msg)
         output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
 
         output_array = output.split("\\n")
