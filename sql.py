@@ -8,7 +8,7 @@ class SQLPlugin(BotPlugin):
     passwd = ""
     server = ""
     
-    def set_variables(self, msg, *args):
+    def set_variables(self, msg):
         user_array = str(msg.frm).split("@")
         username = user_array[0]
         gpg_string = "/root/.password-store/" + username + ".gpg"
@@ -31,7 +31,7 @@ class SQLPlugin(BotPlugin):
         query = "SELECT "+ what_to_select + " FROM " + table
         error = ""
         
-        self.set_variables(self, msg, args)
+        self.set_variables(self, msg)
         output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
 
         output_array = output.split("\\n")
