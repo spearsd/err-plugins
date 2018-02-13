@@ -25,7 +25,7 @@ class SQLPlugin(BotPlugin):
     
     @botcmd(split_args_with=None)
     def select(self, msg, args):
-        """Return job status"""
+        """Return result of select statement. ex: !select * db.tablename"""
         what_to_select = args[0]
         table = args[1]
         query = "SELECT "+ what_to_select + " FROM " + table
