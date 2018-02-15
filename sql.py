@@ -86,10 +86,11 @@ class SQLPlugin(BotPlugin):
             error = error + "Error connecting with your user, do you have the correct permissions? "
         
         if error == "":
-            proc = subprocess.Popen(["cat /tmp/sql_file.sql"], shell=True, stdout=subprocess.PIPE)
-            outs, errs = proc.communicate()
-            yield str(outs)
-            yield str(errs)
+            contents = ""
+            with open('/tmp/sql_file.sql') as f:
+                for line in f.readlines():
+                    contents += line
+            yield contents
             output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", file_content])
             output_array_list = str(output).split("'")[1].split("\\n")
             first_line = True
