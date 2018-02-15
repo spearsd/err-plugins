@@ -100,7 +100,7 @@ class SQLPlugin(BotPlugin):
             error = error + "Error connecting with your user, do you have the correct permissions? "
         
         if error == "":
-            sql_file_command = "mysql -u " + self.user + " -p" + self.passwd + " -h " + self.server + " < " + "/tmp/sql_file.sql"
+            sql_file_command = "mysql -u " + self.user + " " + self.passwd + " -h " + self.server + " < " + "/tmp/sql_file.sql"
             proc = subprocess.Popen([sql_file_command], shell=True, stdout=subprocess.PIPE)
             outs, errs = proc.communicate()
             #output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "<", "/tmp/sql_file.sql"])
