@@ -34,28 +34,31 @@ class SQLPlugin(BotPlugin):
         try:
             self.set_variables(msg)
         except:
-            return "Unable to retrieve your credentials."
+            error = "Unable to retrieve your credentials. "
         
         try:
             subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
         except:
-            return "Error connecting with your user, do you have the correct permissions?"
+            error = error + "Error connecting with your user, do you have the correct permissions? "
         
-        output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
+        if error == "":
+            output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
 
-        output_array_list = str(output).split("'")[1].split("\\n")
-        first_line = True
-        for o in output_array_list:
-            output_array = o.split("\\t")
-            whole_line = ""
-            for x in output_array:
-                whole_line = whole_line + x + "     "
-            if first_line:
-                yield whole_line
-                yield "------------------"
-                first_line = False
-            else:
-                yield whole_line
+            output_array_list = str(output).split("'")[1].split("\\n")
+            first_line = True
+            for o in output_array_list:
+                output_array = o.split("\\t")
+                whole_line = ""
+                for x in output_array:
+                    whole_line = whole_line + x + "     "
+                if first_line:
+                    yield whole_line
+                    yield "------------------"
+                    first_line = False
+                else:
+                    yield whole_line
+        else:
+            yield error
 
                 
                 
@@ -68,31 +71,40 @@ class SQLPlugin(BotPlugin):
         try:
             self.set_variables(msg)
         except:
-            return "Unable to retrieve your credentials."
+            error = "Unable to retrieve your credentials. "
         
         try:
-            subprocess.check_output(["wget", file_url])
+            subprocess.check_output(["wget", "-O", "/tmp/sql_file.sql" file_url])
+            commit_check = subprocess.check_output(["cat", "/tmp/sql_file.sql", "|", "grep", "COMMIT"])
+            if commit_check != "":
+                error = error + "COMMIT found in sql file, please remove this and try again. "
+            # These 2 lines ensure the sql file doesn't make actual changes to the db.
+            subprocess.check_output(["sed", "-i", "'1iBEGIN TRANSACTION;'", "/tmp/sql_file.sql"])
+            subprocess.check_output(["echo", "'ROLLBACK TRANSACTION;'", ">>", "/tmp/sql_file.sql"])
         except:
-            return "Unable to retrieve file from specified url."
+            error = error + "Unable to retrieve file from specified url. "
         
         # pass in file
         try:
-            subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
+            subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "<", "/tmp/sql_file.sql"])
         except:
-            return "Error connecting with your user, do you have the correct permissions?"
+            error = error + "Error connecting with your user, do you have the correct permissions? "
         
-        output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
+        if error == "":
+            output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "<", "/tmp/sql_file.sql"])
 
-        output_array_list = str(output).split("'")[1].split("\\n")
-        first_line = True
-        for o in output_array_list:
-            output_array = o.split("\\t")
-            whole_line = ""
-            for x in output_array:
-                whole_line = whole_line + x + "     "
-            if first_line:
-                yield whole_line
-                yield "------------------"
-                first_line = False
-            else:
-                yield whole_line
+            output_array_list = str(output).split("'")[1].split("\\n")
+            first_line = True
+            for o in output_array_list:
+                output_array = o.split("\\t")
+                whole_line = ""
+                for x in output_array:
+                    whole_line = whole_line + x + "     "
+                if first_line:
+                    yield whole_line
+                    yield "------------------"
+                    first_line = False
+                else:
+                    yield whole_line
+        else:
+            yield error
