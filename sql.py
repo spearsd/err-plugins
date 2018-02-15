@@ -87,6 +87,7 @@ class SQLPlugin(BotPlugin):
         #This is necessary, otherwise the file comes back as empty.
         time.sleep(1)
         if error == "":
+            error_occurred = False
             contents = ""
             with open('/tmp/sql_file.sql') as f:
                 for line in f.readlines():
@@ -94,21 +95,22 @@ class SQLPlugin(BotPlugin):
             try:
                 output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", contents])
             except:
+                error_occurred = True
                 yield "Error occurred while trying to execute sql file."
-                break
-                
-            output_array_list = str(output).split("'")[1].split("\\n")
-            first_line = True
-            for o in output_array_list:
-                output_array = o.split("\\t")
-                whole_line = ""
-                for x in output_array:
-                    whole_line = whole_line + x + "     "
-                if first_line:
-                    yield whole_line
-                    yield "------------------"
-                    first_line = False
-                else:
-                    yield whole_line
+            
+            if not error_occurred:
+                output_array_list = str(output).split("'")[1].split("\\n")
+                first_line = True
+                for o in output_array_list:
+                    output_array = o.split("\\t")
+                    whole_line = ""
+                    for x in output_array:
+                        whole_line = whole_line + x + "     "
+                    if first_line:
+                        yield whole_line
+                        yield "------------------"
+                        first_line = False
+                    else:
+                        yield whole_line
         else:
             yield error
