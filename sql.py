@@ -86,7 +86,7 @@ class SQLPlugin(BotPlugin):
         except:
             error = error + ""
 
-        if str(outs).upper().find("COMMIT;") != "-1":
+        if str(outs).upper().find("COMMIT;") != -1:
             error = error + "COMMIT found in sql file, please remove this and try again. "
       # else:
            # These 2 lines ensure the sql file doesn't make actual changes to the db.
