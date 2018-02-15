@@ -46,7 +46,7 @@ class SQLPlugin(BotPlugin):
         query = "SELECT "+ what_to_select + " FROM " + table
 
         if self.error == "":
-            error_occured = False
+            error_occurred = False
             try:
                 output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
             except:
