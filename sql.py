@@ -87,7 +87,7 @@ class SQLPlugin(BotPlugin):
         
         if error == "":
             sql_file_command = "mysql -u " + self.user + " " + self.passwd + " -h " + self.server + " < " + "/tmp/sql_file.sql"
-            proc = subprocess.Popen([sql_file_command], stdout=subprocess.PIPE)
+            proc = subprocess.run([sql_file_command], shell=True, stdout=subprocess.PIPE)
             outs, errs = proc.communicate()
             #output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "<", "/tmp/sql_file.sql"])
             yield str(outs)
