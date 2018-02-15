@@ -105,7 +105,7 @@ class SQLPlugin(BotPlugin):
             outs, errs = proc.communicate()
             #output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "<", "/tmp/sql_file.sql"])
 
-            outs = str(output).split("'")[1].split("\\n")
+            output_array_list = str(outs).split("'")[1].split("\\n")
             first_line = True
             for o in output_array_list:
                 output_array = o.split("\\t")
