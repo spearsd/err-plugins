@@ -74,7 +74,9 @@ class SQLPlugin(BotPlugin):
             error = "Unable to retrieve your credentials. "
         
         try:
-            subprocess.call(["wget", "-O", "/tmp/sql_file.sql", file_url])
+            wget_url = "wget -O /tmp/sql_file.sql " + file_url
+            subprocess.Popen([wget_url], shell=True, stdout=subprocess.PIPE)
+            #subprocess.call(["wget", "-O", "/tmp/sql_file.sql", file_url])
             yield "Here"
             sql_file_output = subprocess.check_output(["cat", "/tmp/sql_file.sql"])
             yield "Here2"
