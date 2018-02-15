@@ -75,8 +75,8 @@ class SQLPlugin(BotPlugin):
         
         try:
             subprocess.check_output(["wget", "-O", "/tmp/sql_file.sql", file_url])
-            commit_check = subprocess.check_output(["cat", "/tmp/sql_file.sql", "|", "grep", "COMMIT"])
-            if commit_check != "":
+            sql_file_output = subprocess.check_output(["cat", "/tmp/sql_file.sql"])
+            if sql_file_output.upper().find("COMMIT;"):
                 error = error + "COMMIT found in sql file, please remove this and try again. "
             # These 2 lines ensure the sql file doesn't make actual changes to the db.
             subprocess.check_output(["sed", "-i", "'1iBEGIN TRANSACTION;'", "/tmp/sql_file.sql"])
