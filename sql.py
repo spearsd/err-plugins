@@ -64,7 +64,7 @@ class SQLPlugin(BotPlugin):
                 
     @botcmd(split_args_with=None)
     def sql_file(self, msg, args):
-        """Execute remote sql file on targeted server. ex: !sql file http://path.to.file/file.sql"""
+        """Execute remote sql file. ex: !sql file http://path.to.file/file.sql"""
         file_url = args[0]
         error = ""
         
@@ -78,15 +78,16 @@ class SQLPlugin(BotPlugin):
             sql_file_output = subprocess.check_output(["cat", "/tmp/sql_file.sql"])
             if sql_file_output.upper().find("COMMIT;"):
                 error = error + "COMMIT found in sql file, please remove this and try again. "
-            # These 2 lines ensure the sql file doesn't make actual changes to the db.
-            subprocess.check_output(["sed", "-i", "'1iBEGIN TRANSACTION;'", "/tmp/sql_file.sql"])
-            subprocess.check_output(["echo", "'ROLLBACK TRANSACTION;'", ">>", "/tmp/sql_file.sql"])
+           # else:
+                # These 2 lines ensure the sql file doesn't make actual changes to the db.
+                #subprocess.check_output(["sed", "-i", "'1iBEGIN TRANSACTION;'", "/tmp/sql_file.sql"])
+                #subprocess.check_output(["echo", "'ROLLBACK TRANSACTION;'", ">>", "/tmp/sql_file.sql"])
         except:
             error = error + "Unable to retrieve file from specified url. "
         
         # pass in file
         try:
-            subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "<", "/tmp/sql_file.sql"])
+            subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", "SELECT * FROM test.table1"])
         except:
             error = error + "Error connecting with your user, do you have the correct permissions? "
         
