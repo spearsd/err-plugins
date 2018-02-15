@@ -75,7 +75,11 @@ class SQLPlugin(BotPlugin):
         
         try:
             subprocess.call(["wget", "-O", "/tmp/sql_file.sql", file_url])
+            yield "Here"
             sql_file_output = subprocess.check_output(["cat", "/tmp/sql_file.sql"])
+            yield "Here2"
+            #proc = subprocess.Popen(["cat /tmp/sql_file.sql"], shell=True, stdout=subprocess.PIPE)
+            #outs, errs = proc.communicate()
             if sql_file_output.upper().find("COMMIT;"):
                 error = error + "COMMIT found in sql file, please remove this and try again. "
            # else:
