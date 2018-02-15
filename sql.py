@@ -78,20 +78,6 @@ class SQLPlugin(BotPlugin):
             subprocess.Popen([wget_url], shell=True, stdout=subprocess.PIPE)
         except:
             error = error + ""
-            
-        try:
-            #sql_file_output = subprocess.check_output(["cat", "/tmp/sql_file.sql"])
-            proc = subprocess.Popen(["cat /tmp/sql_file.sql"], shell=True, stdout=subprocess.PIPE)
-            outs, errs = proc.communicate()
-        except:
-            error = error + ""
-
-        if str(outs).upper().find("COMMIT;") != -1:
-            error = error + "COMMIT found in sql file, please remove this and try again. "
-      # else:
-           # These 2 lines ensure the sql file doesn't make actual changes to the db.
-           #subprocess.check_output(["sed", "-i", "'1iBEGIN TRANSACTION;'", "/tmp/sql_file.sql"])
-           #subprocess.check_output(["echo", "'ROLLBACK TRANSACTION;'", ">>", "/tmp/sql_file.sql"])
         
         # pass in file
         try:
@@ -101,7 +87,7 @@ class SQLPlugin(BotPlugin):
         
         if error == "":
             sql_file_command = "mysql -u " + self.user + " " + self.passwd + " -h " + self.server + " < " + "/tmp/sql_file.sql"
-            proc = subprocess.Popen([sql_file_command], shell=True, stdout=subprocess.PIPE)
+            proc = subprocess.Popen([sql_file_command], stdout=subprocess.PIPE)
             outs, errs = proc.communicate()
             #output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "<", "/tmp/sql_file.sql"])
             yield str(outs)
