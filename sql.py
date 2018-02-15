@@ -85,10 +85,9 @@ class SQLPlugin(BotPlugin):
             outs, errs = proc.communicate()
         except:
             error = error + ""
-        
-        yield str(outs).upper().find("COMMIT;")
-        #if str(outs).upper().find("COMMIT;") != "-1":
-        #    error = error + "COMMIT found in sql file, please remove this and try again. "
+
+        if str(outs).upper().find("COMMIT;") != "-1":
+            error = error + "COMMIT found in sql file, please remove this and try again. "
       # else:
            # These 2 lines ensure the sql file doesn't make actual changes to the db.
            #subprocess.check_output(["sed", "-i", "'1iBEGIN TRANSACTION;'", "/tmp/sql_file.sql"])
@@ -101,9 +100,12 @@ class SQLPlugin(BotPlugin):
             error = error + "Error connecting with your user, do you have the correct permissions? "
         
         if error == "":
-            output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "<", "/tmp/sql_file.sql"])
+            sql_file_command = "mysql -u " + self.user + " -p" + self.passwd + " -h " + self.server + " < " + "/tmp/sql_file.sql"
+            proc = subprocess.Popen([sql_file_command], shell=True, stdout=subprocess.PIPE)
+            outs, errs = proc.communicate()
+            #output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "<", "/tmp/sql_file.sql"])
 
-            output_array_list = str(output).split("'")[1].split("\\n")
+            outs = str(output).split("'")[1].split("\\n")
             first_line = True
             for o in output_array_list:
                 output_array = o.split("\\t")
