@@ -62,8 +62,7 @@ class SQLPlugin(BotPlugin):
                     for x in output_array:
                         whole_line = whole_line + x + "     "
                     if first_line:
-                        yield whole_line
-                        yield "------------------"
+                        yield "<b>" + whole_line + "</b>"
                         first_line = False
                     else:
                         yield whole_line
@@ -128,8 +127,7 @@ class SQLPlugin(BotPlugin):
                 for x in output_array:
                     whole_line = whole_line + x + "     "
                 if first_line:
-                    yield whole_line
-                    yield "------------------"
+                    yield "<b>" + whole_line + "</b>"
                     first_line = False
                 else:
                     yield whole_line
