@@ -85,9 +85,10 @@ class SQLPlugin(BotPlugin):
             outs, errs = proc.communicate()
         except:
             error = error + ""
-            
-        if str(outs).upper().find("COMMIT;"):
-            error = error + "COMMIT found in sql file, please remove this and try again. "
+        
+        yield str(outs).upper().find("COMMIT;")
+        #if str(outs).upper().find("COMMIT;") != "-1":
+        #    error = error + "COMMIT found in sql file, please remove this and try again. "
       # else:
            # These 2 lines ensure the sql file doesn't make actual changes to the db.
            #subprocess.check_output(["sed", "-i", "'1iBEGIN TRANSACTION;'", "/tmp/sql_file.sql"])
