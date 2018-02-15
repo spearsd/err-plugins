@@ -87,6 +87,7 @@ class SQLPlugin(BotPlugin):
         
         if error == "":
             file_content = subprocess.check_output(["cat", "/tmp/sql_file.sql"])
+            yield file_content
             output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", file_content])
             output_array_list = str(output).split("'")[1].split("\\n")
             first_line = True
