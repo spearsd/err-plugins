@@ -70,7 +70,12 @@ class SQLPlugin(BotPlugin):
         else:
             yield self.error
 
-                
+    @botcmd(split_args_with=None)
+    def sql_file_retrieve(self, msg, args):
+        """Retrieve file from errbot"""
+        file_to_get = args[0]
+        string = '<a href="file:///tmp/' + file_to_get + '">' + file_to_get + '</a>'
+        yield string
                 
     @botcmd(split_args_with=None)
     def sql_file(self, msg, args):
