@@ -74,7 +74,7 @@ class SQLPlugin(BotPlugin):
             error = "Unable to retrieve your credentials. "
         
         try:
-            subprocess.check_output(["wget", "-O", "/tmp/sql_file.sql" file_url])
+            subprocess.check_output(["wget", "-O", "/tmp/sql_file.sql", file_url])
             commit_check = subprocess.check_output(["cat", "/tmp/sql_file.sql", "|", "grep", "COMMIT"])
             if commit_check != "":
                 error = error + "COMMIT found in sql file, please remove this and try again. "
