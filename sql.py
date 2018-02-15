@@ -85,6 +85,7 @@ class SQLPlugin(BotPlugin):
         except:
             error = error + "Error connecting with your user, do you have the correct permissions? "
         
+        time.sleep(10)
         if error == "":
             contents = ""
             with open('/tmp/sql_file.sql') as f:
