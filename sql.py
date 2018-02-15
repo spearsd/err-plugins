@@ -80,10 +80,10 @@ class SQLPlugin(BotPlugin):
             error = error + ""
             
         try:
-            sql_file_output = subprocess.check_output(["cat", "/tmp/sql_file.sql"])
-            #proc = subprocess.Popen(["cat /tmp/sql_file.sql"], shell=True, stdout=subprocess.PIPE)
-            #outs, errs = proc.communicate()
-            if sql_file_output.upper().find("COMMIT;"):
+            #sql_file_output = subprocess.check_output(["cat", "/tmp/sql_file.sql"])
+            proc = subprocess.Popen(["cat /tmp/sql_file.sql"], shell=True, stdout=subprocess.PIPE)
+            outs, errs = proc.communicate()
+            if outs.upper().find("COMMIT;"):
                 error = error + "COMMIT found in sql file, please remove this and try again. "
            # else:
                 # These 2 lines ensure the sql file doesn't make actual changes to the db.
