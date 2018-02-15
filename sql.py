@@ -79,32 +79,36 @@ class SQLPlugin(BotPlugin):
         except:
             error = error + ""
         
-        # pass in file
         try:
             subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", "SELECT * FROM test.table1"])
         except:
             error = error + "Error connecting with your user, do you have the correct permissions? "
         
+        #This is necessary, otherwise the file comes back as empty.
         time.sleep(1)
         if error == "":
             contents = ""
             with open('/tmp/sql_file.sql') as f:
                 for line in f.readlines():
                     contents += line
-            yield contents
-            #output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", file_content])
-            #output_array_list = str(output).split("'")[1].split("\\n")
-            #first_line = True
-            #for o in output_array_list:
-            #    output_array = o.split("\\t")
-            #    whole_line = ""
-            #    for x in output_array:
-            #        whole_line = whole_line + x + "     "
-            #    if first_line:
-            #        yield whole_line
-            #        yield "------------------"
-            #        first_line = False
-            #    else:
-            #        yield whole_line
+            try:
+                output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", contents])
+            except:
+                yield "Error occurred while trying to execute sql file."
+                break
+                
+            output_array_list = str(output).split("'")[1].split("\\n")
+            first_line = True
+            for o in output_array_list:
+                output_array = o.split("\\t")
+                whole_line = ""
+                for x in output_array:
+                    whole_line = whole_line + x + "     "
+                if first_line:
+                    yield whole_line
+                    yield "------------------"
+                    first_line = False
+                else:
+                    yield whole_line
         else:
             yield error
