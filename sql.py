@@ -130,3 +130,34 @@ class SQLPlugin(BotPlugin):
                             first_line = False
                         else:
                             yield whole_line
+          
+    def sql_cmd(self, msg, args):
+        """Return commands pass to errbot."""
+        
+        self.check_access(msg)
+        
+        query = str(args)
+
+        if self.error == "":
+            error_occurred = False
+            try:
+                output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", query])
+            except:
+                error_occurred = True
+                yield "Error occurred while trying to execute sql command(s)."
+                
+            if not error_occurred:
+                output_array_list = str(output).split("'")[1].split("\\n")
+                first_line = True
+                for o in output_array_list:
+                    output_array = o.split("\\t")
+                    whole_line = ""
+                    for x in output_array:
+                        whole_line = whole_line + x + "     "
+                    if first_line:
+                        yield "<b>" + whole_line + "</b>"
+                        first_line = False
+                    else:
+                        yield whole_line
+        else:
+            yield self.error
