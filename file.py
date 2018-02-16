@@ -15,6 +15,6 @@ class File(BotPlugin):
         if path == "":
             yield "Share drive must be setup first. use !setup path /path/to/sharedrive"
         else:
-            string = '<a href="file://' + path + file_to_get + '">' + file_to_get + '</a>'
+            string = '<a href="file://' + path + '/' + file_to_get + '">' + file_to_get + '</a>'
             yield string
             yield "Note: If this link does not work, your shared drive is not properly configured."
