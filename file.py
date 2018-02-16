@@ -2,7 +2,7 @@ from errbot import BotPlugin, botcmd
 import subprocess, tempfile, re, time
 
 class File(BotPlugin):
-"""File retrieval plugin for Errbot"""
+    """File retrieval plugin for Errbot"""
 
     @botcmd(split_args_with=None)
     def file_retrieve(self, msg, args):
