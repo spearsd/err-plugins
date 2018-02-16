@@ -127,11 +127,11 @@ class SQLPlugin(BotPlugin):
                 whole_line = ""
                 for x in output_array:
                     whole_line = whole_line + x + "     "
-                    if first_line:
-                        yield "<b>" + whole_line + "</b>"
-                        first_line = False
-                    else:
-                        yield whole_line
+                if first_line:
+                    yield "<b>" + whole_line + "</b>"
+                    first_line = False
+                else:
+                    yield whole_line
           
     def sql_cmd(self, msg, args):
         """Return commands pass to errbot."""
