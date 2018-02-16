@@ -119,6 +119,7 @@ class SQLPlugin(BotPlugin):
                     yield "Error occurred while trying to execute sql file."
                     
         if not error_occurred:
+            yield str(output)
             output_array_list = str(output).split("'")[1].split("\\n")
             first_line = True
             for o in output_array_list:
