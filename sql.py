@@ -131,7 +131,7 @@ class SQLPlugin(BotPlugin):
                     first_line = False
                 else:
                     yield whole_line
-          
+    @botcmd
     def sql_cmd(self, msg, args):
         """Return commands pass to errbot."""
         
