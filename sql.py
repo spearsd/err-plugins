@@ -77,6 +77,7 @@ class SQLPlugin(BotPlugin):
     def sql_file(self, msg, args):
         """Execute shared drive or remote sql file. ex: !sql file --url http://path.to.file/file.sql"""
         self.check_access(msg)
+        error_occurred = False
         
         if self.error != "":
             yield self.error
@@ -85,22 +86,17 @@ class SQLPlugin(BotPlugin):
             try:
                 wget_url = "wget -O /tmp/sql_file.sql " + file_url
                 subprocess.Popen([wget_url], shell=True, stdout=subprocess.PIPE)
-                yield "Here"
             except:
-                yield "Here2"
                 self.error = error + ""
-            yield "Here3"
             time.sleep(1)
             error_occurred = False
             contents = ""
-            yield "Here4"
             with open('/tmp/sql_file.sql') as f:
                 for line in f.readlines():
                     contents += line
             try:
                 output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", contents])
             except:
-                yield "Here5"
                 error_occurred = True
                 yield "Error occurred while trying to execute sql file."
             
@@ -121,20 +117,20 @@ class SQLPlugin(BotPlugin):
                 except:
                     error_occurred = True
                     yield "Error occurred while trying to execute sql file."
-
-                if not error_occurred:
-                    output_array_list = str(output).split("'")[1].split("\\n")
-                    first_line = True
-                    for o in output_array_list:
-                        output_array = o.split("\\t")
-                        whole_line = ""
-                        for x in output_array:
-                            whole_line = whole_line + x + "     "
-                        if first_line:
-                            yield "<b>" + whole_line + "</b>"
-                            first_line = False
-                        else:
-                            yield whole_line
+                    
+        if not error_occurred:
+            output_array_list = str(output).split("'")[1].split("\\n")
+            first_line = True
+            for o in output_array_list:
+                output_array = o.split("\\t")
+                whole_line = ""
+                for x in output_array:
+                    whole_line = whole_line + x + "     "
+                    if first_line:
+                        yield "<b>" + whole_line + "</b>"
+                        first_line = False
+                    else:
+                        yield whole_line
           
     def sql_cmd(self, msg, args):
         """Return commands pass to errbot."""
