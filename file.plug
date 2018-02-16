@@ -1,0 +1,10 @@
+[Core]
+Name = File
+Module = file
+DependsOn = Setup
+
+[Python]
+Version = 3
+
+[Documentation]
+Description = File retrieval plugin
