@@ -85,20 +85,21 @@ class SQLPlugin(BotPlugin):
             try:
                 wget_url = "wget -O /tmp/sql_file.sql " + file_url
                 subprocess.Popen([wget_url], shell=True, stdout=subprocess.PIPE)
-                time.sleep(1)
-                if self.error == "":
-                    error_occurred = False
-                    contents = ""
-                    with open('/tmp/sql_file.sql') as f:
-                        for line in f.readlines():
-                            contents += line
-                    try:
-                        output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", contents])
-                    except:
-                        error_occurred = True
-                        yield "Error occurred while trying to execute sql file."
             except:
                 self.error = error + ""
+            time.sleep(1)
+            if self.error == "":
+                error_occurred = False
+                contents = ""
+                with open('/tmp/sql_file.sql') as f:
+                    for line in f.readlines():
+                        contents += line
+                try:
+                    output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", contents])
+                except:
+                    error_occurred = True
+                    yield "Error occurred while trying to execute sql file."
+            
         else:
             file = "/tmp/" + args[0]
             if self.error == "":
