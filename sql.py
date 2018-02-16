@@ -10,10 +10,10 @@ class SQLPlugin(BotPlugin):
     error = ""
     
     def set_variables(self, msg):
-        try:
-            test = self.get_plugin('AutoSysServer').target_server
-        except:
+        
+        if str(self.get_plugin('AutoSysServer').target_server) == "":
             self.error = self.error + "No server targeted. Target server with !server target hostname. "
+            
         user_array = str(msg.frm).split("@")
         username = user_array[0]
         gpg_string = "/root/.password-store/" + username + ".gpg"
