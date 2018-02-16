@@ -21,7 +21,7 @@ class SQLPlugin(BotPlugin):
         user_server = username + "@" + self.get_plugin('AutoSysServer').target_server
         self.user = username
         self.passwd = "-p"+user_pass
-        if not self.get_plugin('AutoSysServer').target_server:
+        if self.get_plugin('AutoSysServer').target_server == "":
             self.error = self.error + "No server targeted. Target server with !server target hostname. "
         self.server = self.get_plugin('AutoSysServer').target_server
     
