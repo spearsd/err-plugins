@@ -88,17 +88,16 @@ class SQLPlugin(BotPlugin):
             except:
                 self.error = error + ""
             time.sleep(1)
-            if self.error == "":
-                error_occurred = False
-                contents = ""
-                with open('/tmp/sql_file.sql') as f:
-                    for line in f.readlines():
-                        contents += line
-                try:
-                    output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", contents])
-                except:
-                    error_occurred = True
-                    yield "Error occurred while trying to execute sql file."
+            error_occurred = False
+            contents = ""
+            with open('/tmp/sql_file.sql') as f:
+                for line in f.readlines():
+                    contents += line
+            try:
+                output = subprocess.check_output(["mysql", "-u", self.user, self.passwd, "-h", self.server, "-e", contents])
+            except:
+                error_occurred = True
+                yield "Error occurred while trying to execute sql file."
             
         else:
             file = "/tmp/" + args[0]
