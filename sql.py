@@ -124,5 +124,5 @@ class SQLPlugin(BotPlugin):
                             first_line = False
                         else:
                             yield whole_line
-        else:
-            yield self.error
+                else:
+                    yield self.error
