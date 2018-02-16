@@ -74,7 +74,9 @@ class SQLPlugin(BotPlugin):
         """Execute shared drive or remote sql file. ex: !sql file --url http://path.to.file/file.sql"""
         self.check_access(msg)
         
-        if args[0] == "--url":
+        if self.error != "":
+            yield self.error
+        elif args[0] == "--url":
             file_url = args[1]
             try:
                 wget_url = "wget -O /tmp/sql_file.sql " + file_url
@@ -124,5 +126,3 @@ class SQLPlugin(BotPlugin):
                             first_line = False
                         else:
                             yield whole_line
-                else:
-                    yield self.error
